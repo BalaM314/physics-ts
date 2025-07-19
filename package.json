@@ -1,0 +1,37 @@
+{
+  "name": "physics",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "2d physics engine",
+  "main": "build/index.js",
+  "scripts": {
+    "test": "jasmine",
+    "watch": "tsc -b src/ spec/ -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BalaM314/physics.git"
+  },
+  "keywords": [],
+  "author": "BalaM314",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/BalaM314/physics/issues"
+  },
+  "homepage": "https://github.com/BalaM314/physics#readme",
+  "dependencies": {
+    "smart-buffer": "^4.2.0"
+  },
+  "devDependencies": {
+    "@types/jasmine": "^5.1.4",
+    "@types/node": "^24.0.14",
+    "eslint": "^9.14.0",
+    "jasmine": "^5.4.0",
+    "typescript": "^5.5.0",
+    "typescript-eslint": "^8.13.0"
+  },
+  "files": [
+    "build",
+    "gpl.txt"
+  ]
+}

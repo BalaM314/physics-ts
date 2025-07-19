@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    //general
+    "target": "ES2021",
+    "lib": ["ES2024", "DOM"],
+    "module": "es2022",
+    "esModuleInterop": true,
+    "noEmitOnError": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    //strictness
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noPropertyAccessFromIndexSignature": true,
+		"types": []
+  }
+}
