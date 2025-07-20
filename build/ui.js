@@ -13,7 +13,8 @@ function setCanvasSize() {
     ctx.setTransform(innerWidth / 1920, 0, 0, -innerHeight / 1080, 0, innerHeight);
 }
 let [update, draw] = setupPhysics();
-const ctx = canvas.getContext('2d') ?? crash('canvas not supported');
+const ctx = canvas.getContext('2d', { alpha: false }) ?? crash('canvas not supported');
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 let paused = Boolean(localStorage.getItem('physics-paused'));
 function updateUI() {
     pause.innerText = paused ? '▶️' : '⏸️';
@@ -72,8 +73,8 @@ window.addEventListener("keyup", e => {
         ctx.font = '20px sans-serif';
         ctx.fillStyle = '#905';
         ctx.textAlign = 'left';
-        ctx.fillText(innerHeight > innerWidth ?
-            'If you are on a mobile device, please change to landscape mode.'
+        ctx.fillText((innerHeight > innerWidth && isMobile) ?
+            'Please use landscape mode.'
             : 'Your screen does not have a 16:9 aspect ratio. Graphics may appear distorted.', 20, innerHeight - 30);
     }
     requestAnimationFrame(loop);

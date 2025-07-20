@@ -15,7 +15,9 @@ function setCanvasSize(){
 }
 
 let [update, draw] = setupPhysics();
-const ctx = canvas.getContext('2d') ?? crash('canvas not supported');
+const ctx = canvas.getContext('2d', { alpha: false }) ?? crash('canvas not supported');
+
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 let paused = Boolean(localStorage.getItem('physics-paused'));
 function updateUI(){
@@ -76,8 +78,8 @@ window.addEventListener("keyup", e => {
     ctx.fillStyle = '#905';
     ctx.textAlign = 'left';
     ctx.fillText(
-      innerHeight > innerWidth ?
-        'If you are on a mobile device, please change to landscape mode.'
+      (innerHeight > innerWidth && isMobile) ?
+        'Please use landscape mode.'
       : 'Your screen does not have a 16:9 aspect ratio. Graphics may appear distorted.',
       20, innerHeight - 30
     );
