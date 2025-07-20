@@ -117,3 +117,8 @@ export function getElement(id, type) {
     else
         crash(`Element with id ${id} does not exist`);
 }
+export const Mathf = {
+    frac(x) {
+        return x - Math.floor(x);
+    }
+};

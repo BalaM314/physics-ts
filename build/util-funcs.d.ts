@@ -36,4 +36,7 @@ export declare function match<K extends PropertyKey, O extends Record<K, unknown
 export declare function match<K extends PropertyKey, const O extends Partial<Record<K, unknown>>, D>(value: K, clauses: O, defaultValue: D): O[K & keyof O] | D;
 export declare function convertNaN(value: number, fallback: number): number;
 export declare function getElement<T extends typeof HTMLElement>(id: string, type: T): T["prototype"];
+export declare const Mathf: {
+    frac(x: number): number;
+};
 export {};

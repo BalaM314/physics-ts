@@ -1,4 +1,4 @@
-import { convertNaN } from "./util-funcs.js";
+import { convertNaN, Mathf } from "./util-funcs.js";
 import { forceType } from "./util-types.js";
 class Universe {
     constructor() {
@@ -200,7 +200,7 @@ class Box {
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         Camera.setUnflippedTransform(ctx);
-        ctx.fillText('⭐', this.position.x + this.width / 2, ctx.canvas.height - (this.position.y + this.height / 2));
+        ctx.fillText('⭐', this.position.x + this.width / 2, Scene.height - (this.position.y + this.height / 2));
         Camera.setTransform(ctx);
     }
 }
@@ -235,12 +235,14 @@ class Field {
             ctx.fillRect(this.span.x, this.span.y, this.span.w, this.span.h);
             ctx.fillStyle = '#0002';
             ctx.font = `32px sans-serif`;
+            ctx.textBaseline = 'bottom';
+            ctx.textAlign = 'left';
             const c = this.accel.emoji();
             //Unflip
             Camera.setUnflippedTransform(ctx);
-            for (let y = this.span.y + 5; y < this.span.y + this.span.h - 5; y += 40) {
-                for (let x = this.span.x + 5; x < this.span.x + this.span.w - 5; x += 40) {
-                    ctx.fillText(c, x, innerHeight - y);
+            for (let y = this.span.y + Mathf.frac((this.span.h - 32) / 40) * 20; y < this.span.y + this.span.h - 32; y += 40) {
+                for (let x = this.span.x + Mathf.frac((this.span.w - 32) / 40) * 20; x < this.span.x + this.span.w - 32; x += 40) {
+                    ctx.fillText(c, x, Scene.height - y);
                 }
             }
             Camera.setTransform(ctx);

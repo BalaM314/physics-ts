@@ -124,3 +124,9 @@ export function getElement<T extends typeof HTMLElement>(id:string, type:T){
 	else crash(`Element with id ${id} does not exist`);
 }
 
+export const Mathf = {
+	frac(x:number){
+		return x - Math.floor(x);
+	}
+};
+
