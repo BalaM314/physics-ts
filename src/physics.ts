@@ -114,22 +114,19 @@ export function setupPhysics(){
 	// 	window.activePoint.x = e.x;
 	// 	window.activePoint.y = e.y;
 	// }
-	return function loop(ctx:CanvasRenderingContext2D){
-		universe.update();
-		universe.draw(ctx);
-		// ctx.fillStyle = Geom.parallelogramOverlapsLine(p1, p2, p3, p4, l1, l2) ? 'green' : 'red';
-		// ctx.beginPath();
-		// ctx.moveTo(p1.x, p1.y);
-		// ctx.lineTo(p2.x, p2.y);
-		// ctx.lineTo(p3.x, p3.y);
-		// ctx.lineTo(p4.x, p4.y);
-		// ctx.fill();
-		// ctx.strokeStyle = '#000';
-		// ctx.beginPath();
-		// ctx.moveTo(l1.x, l1.y);
-		// ctx.lineTo(l2.x, l2.y);
-		// ctx.stroke();
-	};
+	return [() => universe.update(), (ctx:CanvasRenderingContext2D) => universe.draw(ctx)] as const;
+	// ctx.fillStyle = Geom.parallelogramOverlapsLine(p1, p2, p3, p4, l1, l2) ? 'green' : 'red';
+	// ctx.beginPath();
+	// ctx.moveTo(p1.x, p1.y);
+	// ctx.lineTo(p2.x, p2.y);
+	// ctx.lineTo(p3.x, p3.y);
+	// ctx.lineTo(p4.x, p4.y);
+	// ctx.fill();
+	// ctx.strokeStyle = '#000';
+	// ctx.beginPath();
+	// ctx.moveTo(l1.x, l1.y);
+	// ctx.lineTo(l2.x, l2.y);
+	// ctx.stroke();
 }
 
 /** Rectangular physics object */

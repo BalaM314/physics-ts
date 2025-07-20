@@ -3,21 +3,25 @@ import { crash, getElement } from "./util-funcs.js";
 const canvas = getElement("canvas", HTMLCanvasElement);
 const pause = getElement("pause", HTMLSpanElement);
 const nextFrame = getElement("next-frame", HTMLSpanElement);
+const reset = getElement("reset", HTMLSpanElement);
 function setCanvasSize() {
     if (canvas.width != innerWidth)
         canvas.width = innerWidth;
     if (canvas.height != innerHeight)
         canvas.height = innerHeight;
 }
-const updatePhysics = setupPhysics();
+let [update, draw] = setupPhysics();
 const ctx = canvas.getContext('2d') ?? crash('canvas not supported');
 let paused = Boolean(localStorage.getItem('physics-paused'));
-pause.addEventListener("click", () => {
-    paused = !paused;
-    Time.reset();
+function updateUI() {
     pause.innerText = paused ? '▶️' : '⏸️';
     pause.title = paused ? 'Resume' : 'Pause';
     nextFrame.classList[paused ? 'remove' : 'add']('disabled');
+}
+pause.addEventListener("click", () => {
+    paused = !paused;
+    updateUI();
+    Time.reset();
 });
 nextFrame.addEventListener("click", () => {
     if (!paused)
@@ -25,7 +29,12 @@ nextFrame.addEventListener("click", () => {
     ctx.fillStyle = `#cceeFF`;
     ctx.fillRect(0, 0, innerWidth, innerHeight);
     Time.reset();
-    updatePhysics(ctx);
+    update();
+});
+reset.addEventListener("click", e => {
+    [update, draw] = setupPhysics();
+    paused = e.shiftKey;
+    updateUI();
 });
 const keysHeld = new Set();
 window.addEventListener("keydown", e => {
@@ -44,10 +53,11 @@ window.addEventListener("keyup", e => {
 (function loop() {
     setCanvasSize();
     Time.update();
+    ctx.fillStyle = `#CCEEFF`;
+    ctx.fillRect(0, 0, innerWidth, innerHeight);
+    draw(ctx);
     if (!paused) {
-        ctx.fillStyle = `#CCEEFF`;
-        ctx.fillRect(0, 0, innerWidth, innerHeight);
-        updatePhysics(ctx);
+        update();
     }
     ctx.font = '32px sans-serif';
     ctx.fillStyle = '#905';
