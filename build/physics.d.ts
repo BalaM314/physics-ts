@@ -8,7 +8,7 @@ export declare const Time: {
 declare global {
     var activePoint: Vec2;
 }
-export declare function setupPhysics(): readonly [() => void, (ctx: CanvasRenderingContext2D) => void];
+export declare function setupPhysics(): readonly [(keysHeld: Set<string>) => void, (ctx: CanvasRenderingContext2D) => void];
 declare class Vec2 {
     x: number;
     y: number;

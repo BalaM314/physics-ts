@@ -36,6 +36,7 @@ export function setupPhysics() {
     universe.add(new ConstantAccelerationField(new Vec2(0, -600)));
     universe.add(new ConstantAccelerationField(new Vec2(0, 1500), new Rect(100, 100, 300, 700)).setDrawer(Field.coloredRectDrawer(`#33aa3320`)));
     universe.add(new ConstantAccelerationField(new Vec2(1000, 0), new Rect(100, 850, 400, 200)).setDrawer(Field.coloredRectDrawer(`#aa333320`)));
+    const box = new Box(new Vec2(600, 950), 1, 100, 100, new Vec2(400, 300));
     // universe.add(new ConstantForceField(
     // 	new Vec2(0, 1200),
     // 	new Rect(420, 50, 300, 750)
@@ -44,12 +45,14 @@ export function setupPhysics() {
     // 	0.02,
     // 	new Rect(800, 200, 300, 600)
     // ).setDrawer(Field.coloredRectDrawer(`#3333aa20`)));
-    universe.add(new Box(new Vec2(600, 950), 1, 100, 100, new Vec2(400, 300)));
-    universe.add(new ThinWall(new Vec2(100, 100), new Vec2(1500, 100), [Direction.up]));
+    universe.add(box);
+    universe.add(new ThinWall(new Vec2(100, 100), new Vec2(1750, 100), [Direction.up]));
     universe.add(new ThinWall(new Vec2(1050, 750), new Vec2(1350, 950), [Direction.up, Direction.left]));
     universe.add(new ThinWall(new Vec2(550, 650), new Vec2(550, 700), [Direction.right]));
     universe.add(new ThinWall(new Vec2(550, 650), new Vec2(1150, 500), [Direction.up, Direction.right]));
     universe.add(new ThinWall(new Vec2(1050, 150), new Vec2(1750, 400), [Direction.up, Direction.left]));
+    universe.add(new ThinWall(new Vec2(1750, 400), new Vec2(1750, 450), [Direction.left]));
+    universe.add(new ThinWall(new Vec2(1050, 150), new Vec2(1050, 100), [Direction.left]));
     universe.add(new ThinWall(new Vec2(100, 100), new Vec2(100, 900), [Direction.right]));
     // let
     // 	p1 = new Vec2(100, 100),
@@ -64,7 +67,13 @@ export function setupPhysics() {
     // 	window.activePoint.x = e.x;
     // 	window.activePoint.y = e.y;
     // }
-    return [() => universe.update(), (ctx) => universe.draw(ctx)];
+    return [(keysHeld) => {
+            if (keysHeld.has('arrowright') || keysHeld.has('d'))
+                box.applyForce(new Vec2(200, 0));
+            if (keysHeld.has('arrowleft') || keysHeld.has('a'))
+                box.applyForce(new Vec2(-200, 0));
+            universe.update();
+        }, (ctx) => universe.draw(ctx)];
     // ctx.fillStyle = Geom.parallelogramOverlapsLine(p1, p2, p3, p4, l1, l2) ? 'green' : 'red';
     // ctx.beginPath();
     // ctx.moveTo(p1.x, p1.y);
@@ -135,10 +144,10 @@ class Box {
                 if (Geom.parallelogramOverlapsLine(p1, p2, p2d, p1d, wall.point1, wall.point2)) {
                     console.log(`Edge ${p1}-${p2} (${direction.string}) collided with wall ${wall.point1}-${wall.point2} while moving ${delta}`);
                     //Calculate how much of the movement needs to be blocked
-                    let T1 = Geom.getT(p1, delta, wall.point1, wall.point2);
+                    let T1 = convertNaN(Geom.getT(p1, delta, wall.point1, wall.point2), 1);
                     if (T1 < 0)
                         T1 = 1;
-                    let T2 = Geom.getT(p2, delta, wall.point1, wall.point2);
+                    let T2 = convertNaN(Geom.getT(p2, delta, wall.point1, wall.point2), 1);
                     if (T2 < 0)
                         T2 = 1;
                     const Tn = Math.min(T1, T2);
@@ -147,7 +156,7 @@ class Box {
                     //subtract 0.01 to prevent clipping through due to floating point imprecision
                     //this causes objects to float very slightly above the wall (usually by less than one pixel)
                     //Calculate the necessary reaction force
-                    if (T1 === 1 && T2 === 1) {
+                    if ((T1 >= 1 && T2 >= 1) || (T1 < 0 && T <= 0)) {
                         console.log('Skipped reaction force');
                     }
                     else {

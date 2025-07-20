@@ -29,7 +29,7 @@ nextFrame.addEventListener("click", () => {
     ctx.fillStyle = `#cceeFF`;
     ctx.fillRect(0, 0, innerWidth, innerHeight);
     Time.reset();
-    update();
+    update(keysHeld);
 });
 reset.addEventListener("click", e => {
     [update, draw] = setupPhysics();
@@ -41,14 +41,17 @@ window.addEventListener("keydown", e => {
     if (e.key === ".") {
         nextFrame.click();
     }
+    if (e.key === "r") {
+        reset.click();
+    }
     if (e.key === " ") {
         pause.click();
         e.preventDefault();
     }
-    keysHeld.add(e.key);
+    keysHeld.add(e.key.toLowerCase());
 });
 window.addEventListener("keyup", e => {
-    keysHeld.delete(e.key);
+    keysHeld.delete(e.key.toLowerCase());
 });
 (function loop() {
     setCanvasSize();
@@ -57,7 +60,7 @@ window.addEventListener("keyup", e => {
     ctx.fillRect(0, 0, innerWidth, innerHeight);
     draw(ctx);
     if (!paused) {
-        update();
+        update(keysHeld);
     }
     ctx.font = '32px sans-serif';
     ctx.fillStyle = '#905';
