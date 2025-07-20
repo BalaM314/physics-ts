@@ -40,7 +40,7 @@ reset.addEventListener("click", e => {
   updateUI();
 });
 help.addEventListener("click", e => {
-  alert('Press ←/→ or A/D to apply a force to the box.');
+  alert('Press ←/→ or A/D to apply a force to the box.\n\nSource code: https://github.com/BalaM314/physics-ts');
 });
 const keysHeld = new Set<string>();
 window.addEventListener("keydown", e => {
