@@ -235,12 +235,12 @@ class Box implements PhysicsObject {
 
 	draw(ctx:CanvasRenderingContext2D){
 		ctx.fillStyle = `#aaFFaa`;
-		ctx.fillRect(this.position.x, ctx.canvas.height - this.position.y - this.height, this.width, this.height);
+		ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
 		ctx.lineWidth = 1;
-		ctx.strokeRect(this.position.x, ctx.canvas.height - this.position.y - this.height, this.width, this.height);
+		ctx.strokeRect(this.position.x, this.position.y, this.width, this.height);
 		ctx.textAlign = 'center';
 		ctx.textBaseline = 'middle';
-		ctx.fillText('⭐', this.position.x + this.width / 2, ctx.canvas.height - (this.position.y + this.height / 2))
+		ctx.fillText('⭐', this.position.x + this.width / 2, this.position.y + this.height / 2);
 	}
 }
 
@@ -279,11 +279,11 @@ abstract class Field implements PhysicsObject {
 	static coloredRectDrawer(color:string):FieldDrawer<ConstantAccelerationField> {
 		return function(ctx){
 			ctx.fillStyle = color;
-			ctx.fillRect(this.span.x, ctx.canvas.height - this.span.y - this.span.h, this.span.w, this.span.h);
+			ctx.fillRect(this.span.x, this.span.y, this.span.w, this.span.h);
 			ctx.fillStyle = '#0002';
 			ctx.font = `32px sans-serif`;
 			const c = this.accel.emoji();
-			for(let y = ctx.canvas.height - this.span.y - 5; y > ctx.canvas.height - this.span.y - this.span.h + 5; y -= 40){
+			for(let y = this.span.y + 5; y < this.span.y + this.span.h - 5; y += 40){
 				for(let x = this.span.x + 5; x < this.span.x + this.span.w - 5; x += 40){
 					ctx.fillText(c, x, y);
 				}
@@ -358,8 +358,8 @@ class ThinWall implements PhysicsObject {
 	draw(ctx: CanvasRenderingContext2D){
 		ctx.beginPath();
 		ctx.lineWidth = 4;
-		ctx.moveTo(this.point1.x, ctx.canvas.height - this.point1.y);
-		ctx.lineTo(this.point2.x, ctx.canvas.height - this.point2.y);
+		ctx.moveTo(this.point1.x, this.point1.y);
+		ctx.lineTo(this.point2.x, this.point2.y);
 		ctx.stroke();
 	}
 

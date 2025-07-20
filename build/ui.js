@@ -10,6 +10,7 @@ function setCanvasSize() {
         canvas.width = innerWidth;
     if (canvas.height != innerHeight)
         canvas.height = innerHeight;
+    ctx.setTransform(innerWidth / 1920, 0, 0, -innerHeight / 1080, 0, innerHeight);
 }
 let [update, draw] = setupPhysics();
 const ctx = canvas.getContext('2d') ?? crash('canvas not supported');
@@ -61,15 +62,19 @@ window.addEventListener("keyup", e => {
     setCanvasSize();
     Time.update();
     ctx.fillStyle = `#CCEEFF`;
-    ctx.fillRect(0, 0, innerWidth, innerHeight);
+    ctx.fillRect(0, 0, 1920, 1080);
     draw(ctx);
     if (!paused) {
         update(keysHeld);
     }
-    ctx.font = '32px sans-serif';
-    ctx.fillStyle = '#905';
-    ctx.textAlign = 'left';
-    if (innerWidth < 1700)
-        ctx.fillText('Zoom out! (press Ctrl and -)', 20, innerHeight - 30);
+    if (Math.abs(innerWidth / innerHeight - 16 / 9) > 0.3) {
+        ctx.setTransform();
+        ctx.font = '20px sans-serif';
+        ctx.fillStyle = '#905';
+        ctx.textAlign = 'left';
+        ctx.fillText(innerHeight > innerWidth ?
+            'If you are on a mobile device, please change to landscape mode.'
+            : 'Your screen does not have a 16:9 aspect ratio. Graphics may appear distorted.', 20, innerHeight - 30);
+    }
     requestAnimationFrame(loop);
 })();
