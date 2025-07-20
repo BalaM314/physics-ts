@@ -31,6 +31,18 @@ export const Time = {
         Time.current = Date.now();
     },
 };
+export const Scene = {
+    width: 1920,
+    height: 1080,
+};
+export const Camera = {
+    setTransform(ctx) {
+        ctx.setTransform(innerWidth / Scene.width, 0, 0, -innerHeight / Scene.height, 0, innerHeight);
+    },
+    setUnflippedTransform(ctx) {
+        ctx.setTransform(innerWidth / Scene.width, 0, 0, innerHeight / Scene.height, 0, 0);
+    },
+};
 export function setupPhysics() {
     const universe = new Universe();
     universe.add(new ConstantAccelerationField(new Vec2(0, -600)));
@@ -187,7 +199,9 @@ class Box {
         ctx.strokeRect(this.position.x, this.position.y, this.width, this.height);
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText('⭐', this.position.x + this.width / 2, this.position.y + this.height / 2);
+        Camera.setUnflippedTransform(ctx);
+        ctx.fillText('⭐', this.position.x + this.width / 2, ctx.canvas.height - (this.position.y + this.height / 2));
+        Camera.setTransform(ctx);
     }
 }
 class Field {
@@ -222,11 +236,14 @@ class Field {
             ctx.fillStyle = '#0002';
             ctx.font = `32px sans-serif`;
             const c = this.accel.emoji();
+            //Unflip
+            Camera.setUnflippedTransform(ctx);
             for (let y = this.span.y + 5; y < this.span.y + this.span.h - 5; y += 40) {
                 for (let x = this.span.x + 5; x < this.span.x + this.span.w - 5; x += 40) {
-                    ctx.fillText(c, x, y);
+                    ctx.fillText(c, x, innerHeight - y);
                 }
             }
+            Camera.setTransform(ctx);
         };
     }
 }

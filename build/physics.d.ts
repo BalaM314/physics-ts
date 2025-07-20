@@ -5,6 +5,14 @@ export declare const Time: {
     update(): void;
     reset(): void;
 };
+export declare const Scene: {
+    width: number;
+    height: number;
+};
+export declare const Camera: {
+    setTransform(ctx: CanvasRenderingContext2D): void;
+    setUnflippedTransform(ctx: CanvasRenderingContext2D): void;
+};
 declare global {
     var activePoint: Vec2;
 }

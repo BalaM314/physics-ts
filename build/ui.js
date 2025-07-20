@@ -1,4 +1,4 @@
-import { setupPhysics, Time } from "./physics.js";
+import { Camera, Scene, setupPhysics, Time } from "./physics.js";
 import { crash, getElement } from "./util-funcs.js";
 const canvas = getElement("canvas", HTMLCanvasElement);
 const pause = getElement("pause", HTMLSpanElement);
@@ -10,7 +10,7 @@ function setCanvasSize() {
         canvas.width = innerWidth;
     if (canvas.height != innerHeight)
         canvas.height = innerHeight;
-    ctx.setTransform(innerWidth / 1920, 0, 0, -innerHeight / 1080, 0, innerHeight);
+    Camera.setTransform(ctx);
 }
 let [update, draw] = setupPhysics();
 const ctx = canvas.getContext('2d', { alpha: false }) ?? crash('canvas not supported');
@@ -63,7 +63,7 @@ window.addEventListener("keyup", e => {
     setCanvasSize();
     Time.update();
     ctx.fillStyle = `#CCEEFF`;
-    ctx.fillRect(0, 0, 1920, 1080);
+    ctx.fillRect(0, 0, Scene.width, Scene.height);
     draw(ctx);
     if (!paused) {
         update(keysHeld);
