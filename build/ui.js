@@ -41,9 +41,14 @@ window.addEventListener("keydown", e => {
     setCanvasSize();
     Time.update();
     if (!paused) {
-        ctx.fillStyle = `#cceeFF`;
+        ctx.fillStyle = `#CCEEFF`;
         ctx.fillRect(0, 0, innerWidth, innerHeight);
         updatePhysics(ctx);
     }
+    ctx.font = '32px sans-serif';
+    ctx.fillStyle = '#905';
+    ctx.textAlign = 'left';
+    if (innerWidth < 1700)
+        ctx.fillText('Zoom out! (press Ctrl and -)', 20, innerHeight - 30);
     requestAnimationFrame(loop);
 })();
