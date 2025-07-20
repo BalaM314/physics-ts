@@ -4,6 +4,7 @@ const canvas = getElement("canvas", HTMLCanvasElement);
 const pause = getElement("pause", HTMLSpanElement);
 const nextFrame = getElement("next-frame", HTMLSpanElement);
 const reset = getElement("reset", HTMLSpanElement);
+const help = getElement("help", HTMLSpanElement);
 function setCanvasSize() {
     if (canvas.width != innerWidth)
         canvas.width = innerWidth;
@@ -35,6 +36,9 @@ reset.addEventListener("click", e => {
     [update, draw] = setupPhysics();
     paused = e.shiftKey;
     updateUI();
+});
+help.addEventListener("click", e => {
+    alert('Press ←/→ or A/D to apply a force to the box.');
 });
 const keysHeld = new Set();
 window.addEventListener("keydown", e => {
