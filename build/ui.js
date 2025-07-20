@@ -27,15 +27,19 @@ nextFrame.addEventListener("click", () => {
     Time.reset();
     updatePhysics(ctx);
 });
+const keysHeld = new Set();
 window.addEventListener("keydown", e => {
-    if (e.key === "ArrowRight") {
+    if (e.key === ".") {
         nextFrame.click();
-        e.preventDefault();
     }
     if (e.key === " ") {
         pause.click();
         e.preventDefault();
     }
+    keysHeld.add(e.key);
+});
+window.addEventListener("keyup", e => {
+    keysHeld.delete(e.key);
 });
 (function loop() {
     setCanvasSize();
