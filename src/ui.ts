@@ -77,11 +77,12 @@ window.addEventListener("keyup", e => {
     ctx.font = '20px sans-serif';
     ctx.fillStyle = '#905';
     ctx.textAlign = 'left';
+    ctx.textBaseline = 'bottom';
     ctx.fillText(
       (innerHeight > innerWidth && isMobile) ?
         'Please use landscape mode.'
       : 'Your screen does not have a 16:9 aspect ratio. Graphics may appear distorted.',
-      20, innerHeight - 30
+      20, innerHeight - 4
     );
   }
   requestAnimationFrame(loop);
